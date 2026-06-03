@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Облако тегов — PollPoint</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="page-center">
+    <div class="container container--wide">
+      <div class="text-center mb-8">
+        <div class="poll-badge">Облако тегов</div>
+        <h1 class="poll-question" id="question">Загрузка...</h1>
+        <p class="main__subtitle">Введите слова или фразы через запятую</p>
+      </div>
+
+      <div class="card card--bordered mb-6">
+        <textarea id="tags-input" class="form-textarea" rows="4"
+          placeholder="JavaScript, React, TypeScript, Node.js"></textarea>
+        <p class="form-hint" style="margin-top:0.5rem;">Пример: Python, машинное обучение, веб-разработка</p>
+      </div>
+
+      <button type="button" class="btn btn--primary btn--block" id="submit-tags"
+        style="padding:1rem;font-size:1.125rem;">
+        Отправить ответ
+      </button>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const sessionId = params.get('session');
+
+    // AUTH FIRST: Must be logged in as student to see poll
+    function requireStudentAuth() {
+      const user = getUser();
+      if (!isAuthenticated() || !user) {
+        const returnTo = encodeURIComponent(window.location.href);
+        window.location.href = `index.html?returnTo=${returnTo}`;
+        return null;
+      }
+      if (user.role !== 'student') {
+        alert('Только студенты могут участвовать в опросах. Войдите как студент.');
+        window.location.href = 'index.html';
+        return null;
+      }
+      return user;
+    }
+
+    async function loadPoll() {
+      // First check: must be authenticated as student
+      const user = requireStudentAuth();
+      if (!user) return; // Redirected to login
+
+      if (!sessionId) {
+        document.getElementById('question').textContent = 'Нет session ID';
+        return;
+      }
+
+      try {
+        const poll = await apiFetch(`/api/sessions/${encodeURIComponent(sessionId)}/poll`, { auth: false });
+        if (poll.test_type !== 'tags') {
+          window.location.href = `poll.html?session=${encodeURIComponent(sessionId)}`;
+          return;
+        }
+        document.getElementById('question').textContent = poll.question;
+      } catch (e) {
+        console.error(e);
+        document.getElementById('question').textContent = 'Ошибка загрузки опроса';
+      }
+    }
+
+    document.getElementById('submit-tags').addEventListener('click', async () => {
+      const val = document.getElementById('tags-input').value.trim();
+      if (!val || !sessionId) return;
+
+      // Re-verify auth before submitting
+      const user = requireStudentAuth();
+      if (!user) return;
+
+      try {
+        const tags = val.split(',').map((s) => s.trim()).filter(Boolean);
+        await apiFetch('/api/responses', { method: 'POST', body: { session_id: sessionId, tags } });
+        window.location.href = 'vote-submitted.html';
+      } catch (e) {
+        console.error(e);
+        alert('Не удалось отправить ответ. Попробуйте снова.');
+      }
+    });
+
+    loadPoll().catch((e) => {
+      console.error(e);
+      document.getElementById('question').textContent = 'Ошибка загрузки опроса';
+    });
+  </script>
+</body>
+</html>

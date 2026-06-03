@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PollPoint — Вход</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="page-center">
+    <div class="container">
+      <div class="brand">
+        <div class="brand__icon" id="brand-icon"></div>
+        <h1 class="brand__title">PollPoint</h1>
+        <p class="brand__subtitle">Интерактивное тестирование в реальном времени</p>
+      </div>
+
+      <div class="card">
+        <div class="tabs">
+          <button type="button" class="tab tab--active" data-tab="login">Вход</button>
+          <button type="button" class="tab" data-tab="register">Регистрация</button>
+        </div>
+
+        <label class="form-label">Выберите роль</label>
+        <div class="role-grid mb-6">
+          <button type="button" class="role-btn role-btn--active" data-role="student">
+            <div class="role-btn__icon" id="role-student-icon"></div>
+            <div class="role-btn__label">Студент</div>
+          </button>
+          <button type="button" class="role-btn" data-role="teacher">
+            <div class="role-btn__icon" id="role-teacher-icon"></div>
+            <div class="role-btn__label">Преподаватель</div>
+          </button>
+        </div>
+
+        <form id="auth-form">
+          <div class="form-group hidden" id="name-group">
+            <label class="form-label" for="name">Имя</label>
+            <div class="form-input-wrap">
+              <span class="form-icon" id="name-icon"></span>
+              <input type="text" id="name" class="form-input" placeholder="Введите ваше имя">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="email">Email</label>
+            <div class="form-input-wrap">
+              <span class="form-icon" id="email-icon"></span>
+              <input type="email" id="email" class="form-input" placeholder="your@email.com" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="password">Пароль</label>
+            <div class="form-input-wrap">
+              <span class="form-icon" id="password-icon"></span>
+              <input type="password" id="password" class="form-input" placeholder="••••••••" required>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn--primary btn--block" style="margin-top: 1.5rem;" id="submit-btn">
+            Войти
+          </button>
+        </form>
+      </div>
+
+      <p class="footer-note">PollPoint — интеграция с PowerPoint для интерактивных опросов</p>
+    </div>
+  </div>
+
+  <script src="js/icons.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    document.getElementById('brand-icon').innerHTML = Icons.graduation;
+    document.getElementById('role-student-icon').innerHTML = Icons.users;
+    document.getElementById('role-teacher-icon').innerHTML = Icons.graduation;
+    document.getElementById('name-icon').innerHTML = Icons.user;
+    document.getElementById('email-icon').innerHTML = Icons.mail;
+    document.getElementById('password-icon').innerHTML = Icons.lock;
+
+    let isLogin = true;
+    let role = 'student';
+
+    const tabs = document.querySelectorAll('.tab');
+    const roleBtns = document.querySelectorAll('.role-btn');
+    const nameGroup = document.getElementById('name-group');
+    const nameInput = document.getElementById('name');
+    const submitBtn = document.getElementById('submit-btn');
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        isLogin = tab.dataset.tab === 'login';
+        tabs.forEach((t) => t.classList.toggle('tab--active', t === tab));
+        nameGroup.classList.toggle('hidden', isLogin);
+        nameInput.required = !isLogin;
+        submitBtn.textContent = isLogin ? 'Войти' : 'Зарегистрироваться';
+      });
+    });
+
+    roleBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        role = btn.dataset.role;
+        roleBtns.forEach((b) => b.classList.toggle('role-btn--active', b === btn));
+      });
+    });
+
+    const returnTo = new URLSearchParams(window.location.search).get('returnTo');
+
+    document.getElementById('auth-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const name = document.getElementById('name').value;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Загрузка...';
+
+      try {
+        if (isLogin) {
+          await login(email, password, role);
+        } else {
+          await register(email, password, name, role);
+        }
+        if (returnTo) {
+          window.location.href = returnTo;
+        } else if (role === 'teacher') {
+          window.location.href = 'teacher.html';
+        } else {
+          alert('Студент: откройте страницу опроса по QR-коду от преподавателя.');
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Ошибка входа/регистрации. Проверьте email, пароль и роль.');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = isLogin ? 'Войти' : 'Зарегистрироваться';
+      }
+    });
+
+    if (isAuthenticated()) {
+      const u = getUser();
+      if (u.role === 'teacher') window.location.href = 'teacher.html';
+    }
+  </script>
+</body>
+</html>

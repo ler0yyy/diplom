@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Создать слайд — PollPoint</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner" style="max-width:56rem;margin:0 auto;padding:1rem;">
+      <a href="teacher.html" class="back-link"><span id="back-icon"></span> Назад к презентациям</a>
+      <h1 class="main__title" id="page-title">Создать слайд с вопросом</h1>
+    </div>
+  </header>
+
+  <main class="main" style="max-width:56rem;">
+    <div class="card card--bordered">
+      <form id="slide-form">
+        <div class="form-group">
+          <label class="form-label" for="test-type">Тип теста</label>
+          <select id="test-type" class="form-input form-input--no-icon">
+            <option value="choice">С вариантами ответов</option>
+            <option value="tags">Облако тегов (свободный ввод)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="question">Вопрос</label>
+          <textarea id="question" class="form-textarea" rows="3" required
+            placeholder="Какой из следующих методов используется для создания массива в JavaScript?"></textarea>
+        </div>
+
+        <div class="form-group" id="answers-block">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;">
+            <label class="form-label" style="margin:0;">Варианты ответов (<span id="answers-count">2</span>/5)</label>
+            <button type="button" class="link-btn" id="add-answer-btn">
+              <span id="plus-small"></span> Добавить вариант
+            </button>
+          </div>
+          <div id="answers-list"></div>
+          <p class="form-hint">Минимум 2 варианта, максимум 5 вариантов ответа</p>
+        </div>
+
+        <div class="form-group hidden" id="tags-preview-block">
+          <label class="form-label">Облако тегов</label>
+          <div class="card" style="background:var(--gray-50);padding:1rem;">
+            <p style="margin:0 0 0.5rem 0;">Студенты смогут вводить свои слова или фразы через запятую.</p>
+            <p class="form-hint" style="margin:0;">Пример ответа: <em>JavaScript, React, TypeScript</em></p>
+            <div style="margin-top:0.75rem;display:flex;flex-wrap:wrap;gap:0.5rem;">
+              <span style="background:#fff;border:1px solid var(--gray-200);padding:0.35rem 0.6rem;border-radius:9999px;font-size:0.875rem;"><strong>JavaScript</strong></span>
+              <span style="background:#fff;border:1px solid var(--gray-200);padding:0.35rem 0.6rem;border-radius:9999px;font-size:0.875rem;"><strong style="color:var(--orange-600);">React</strong></span>
+              <span style="background:#fff;border:1px solid var(--gray-200);padding:0.35rem 0.6rem;border-radius:9999px;font-size:0.875rem;"><strong>TypeScript</strong></span>
+              <span style="background:#fff;border:1px solid var(--gray-200);padding:0.35rem 0.6rem;border-radius:9999px;font-size:0.875rem;"><strong style="color:var(--orange-600);">Node.js</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <a href="teacher.html" class="btn btn--outline">Отмена</a>
+          <button type="button" class="btn btn--outline-accent" id="qr-btn">
+            <span id="qr-icon"></span> Посмотреть QR-код
+          </button>
+          <button type="submit" class="btn btn--primary" id="submit-btn">Создать слайд</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="card card--bordered" style="margin-top:1.5rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;">
+        <h2 class="section-title" style="margin:0;">Слайды презентации</h2>
+        <small class="main__subtitle">Нажмите «Редактировать» или «Удалить»</small>
+      </div>
+      <div id="slides-list" style="margin-top:1rem;"></div>
+    </div>
+  </main>
+
+  <script src="js/icons.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/create-slide.js"></script>
+  <script>
+    document.getElementById('back-icon').innerHTML = Icons.arrowLeft;
+    document.getElementById('plus-small').innerHTML = Icons.plus;
+    document.getElementById('qr-icon').innerHTML = Icons.qr;
+  </script>
+</body>
+</html>

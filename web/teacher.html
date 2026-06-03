@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PollPoint — Кабинет преподавателя</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <div class="site-header__brand">
+        <div class="site-header__logo" id="header-logo"></div>
+        <div>
+          <h1 class="site-header__title">PollPoint</h1>
+          <p class="site-header__subtitle">Личный кабинет преподавателя</p>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:1rem;">
+        <div class="site-header__user">
+          <p class="site-header__name" data-user-name></p>
+          <p class="site-header__email" data-user-email></p>
+        </div>
+        <button type="button" class="btn-icon" id="logout-btn" title="Выйти"></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="main__head">
+      <div>
+        <h2 class="main__title">Мои презентации</h2>
+        <p class="main__subtitle">Создавайте опросы и отслеживайте результаты</p>
+      </div>
+      <a href="create-presentation.html" class="btn btn--primary">
+        <span id="plus-icon"></span>
+        Создать презентацию
+      </a>
+    </div>
+
+    <div class="grid grid--3" id="presentations-grid"></div>
+  </main>
+
+  <script src="js/icons.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    requireAuth('teacher');
+    fillUserHeader();
+    document.getElementById('header-logo').innerHTML = Icons.presentation;
+    document.getElementById('plus-icon').innerHTML = Icons.plus;
+    document.getElementById('logout-btn').innerHTML = Icons.logout;
+    document.getElementById('logout-btn').addEventListener('click', logout);
+
+    async function loadPresentations() {
+      const grid = document.getElementById('presentations-grid');
+      grid.innerHTML = '';
+      const items = await apiFetch('/api/presentations');
+
+      if (!items.length) {
+        grid.innerHTML = `
+          <div class="card card--dashed" style="grid-column:1/-1;">
+            <div style="font-size:2rem;margin-bottom:0.5rem;">${Icons.presentation}</div>
+            <h3 style="font-size:1.125rem;font-weight:600;margin-bottom:0.5rem;">Пока нет презентаций</h3>
+            <p class="main__subtitle" style="margin-bottom:1rem;">Создайте первую презентацию с интерактивными вопросами</p>
+            <a href="create-presentation.html" class="btn btn--primary">Создать презентацию</a>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = items.map((p) => `
+        <article class="presentation-card" data-id="${p.id}">
+          <div class="presentation-card__top">
+            <div class="presentation-card__icon">${Icons.presentation}</div>
+            <button type="button" class="btn-icon delete-btn" title="Удалить" data-id="${p.id}" style="color:var(--red-600);">${Icons.trash}</button>
+          </div>
+          <h3 class="presentation-card__title">${p.title}</h3>
+          <div class="meta-row">${Icons.calendar}<span>${p.created_at ? new Date(p.created_at).toLocaleDateString('ru-RU') : ''}</span></div>
+        </article>
+      `).join('');
+
+      grid.querySelectorAll('.presentation-card').forEach((card) => {
+        card.addEventListener('click', () => {
+          window.location.href = `create-slide.html?presentationId=${card.dataset.id}`;
+        });
+      });
+
+      grid.querySelectorAll('.delete-btn').forEach((btn) => {
+        btn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          const id = btn.dataset.id;
+          if (!confirm('Удалить презентацию?')) return;
+          await apiFetch(`/api/presentations/${id}`, { method: 'DELETE' });
+          loadPresentations().catch(console.error);
+        });
+      });
+    }
+
+    loadPresentations().catch((e) => {
+      console.error(e);
+      alert('Не удалось загрузить презентации. Запущен ли сервер на localhost:5000?');
+    });
+  </script>
+</body>
+</html>

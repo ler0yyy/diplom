@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Результаты — PollPoint</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner" style="max-width:72rem;margin:0 auto;padding:1rem;">
+      <a href="teacher.html" class="back-link"><span id="back-icon"></span> Назад к презентациям</a>
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+        <h1 class="main__title">Результаты голосования</h1>
+        <div class="votes-badge">
+          <span id="users-icon"></span>
+          <span id="total-votes">0 голосов</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="card card--bordered mb-6">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem;">
+        <div>
+          <span class="badge">Голосование завершено</span>
+          <h2 style="font-size:1.25rem;font-weight:600;" id="question-text"></h2>
+        </div>
+        <div class="chart-toggle">
+          <button type="button" id="chart-bar" class="active" title="Столбчатая"></button>
+          <button type="button" id="chart-pie" title="Круговая">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" stroke-width="2"/><path d="M12 4v8h6" stroke-width="2"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="results-chart"></canvas>
+      </div>
+    </div>
+
+    <div class="card card--bordered">
+      <h3 class="section-title">Детальная статистика</h3>
+      <div id="stats-list"></div>
+    </div>
+  </main>
+
+  <script src="js/chart.umd.min.js"></script>
+  <script src="js/icons.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/results.js"></script>
+  <script>
+    document.getElementById('back-icon').innerHTML = Icons.arrowLeft;
+    document.getElementById('users-icon').innerHTML = Icons.users;
+    document.getElementById('chart-bar').innerHTML = Icons.barChart;
+  </script>
+</body>
+</html>

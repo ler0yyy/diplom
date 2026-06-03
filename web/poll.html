@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Опрос — PollPoint</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="page-center">
+    <div class="container container--wide">
+      <div class="text-center mb-8">
+        <div class="poll-badge">Интерактивный опрос</div>
+        <h1 class="poll-question" id="question"></h1>
+        <p class="main__subtitle">Выберите один вариант ответа</p>
+      </div>
+
+      <div class="answer-list" id="answer-list"></div>
+
+      <button type="button" class="btn btn--primary btn--block" id="submit-answer" disabled
+        style="padding:1rem;font-size:1.125rem;border-radius:0.75rem;">
+        Отправить ответ
+      </button>
+      <p class="footer-note">Ваш ответ будет отправлен немедленно</p>
+    </div>
+  </div>
+
+  <script src="js/icons.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/poll.js"></script>
+</body>
+</html>

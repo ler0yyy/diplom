@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Создание презентации — PollPoint</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner container--wide" style="max-width:56rem;">
+      <a href="teacher.html" class="back-link"><span id="back-icon"></span> Назад к презентациям</a>
+      <h1 class="main__title">Создание презентации</h1>
+    </div>
+  </header>
+
+  <main class="main" style="max-width:56rem;">
+    <div class="card card--bordered">
+      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem;">
+        <div class="presentation-card__icon" id="form-icon"></div>
+        <div>
+          <h2 style="font-size:1.25rem;font-weight:600;">Новая презентация</h2>
+          <p class="main__subtitle">Заполните основную информацию</p>
+        </div>
+      </div>
+
+      <form id="create-form">
+        <div class="form-group">
+          <label class="form-label" for="title">Название презентации</label>
+          <input type="text" id="title" class="form-input form-input--no-icon" placeholder="Введение в JavaScript" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="description">Описание (опционально)</label>
+          <textarea id="description" class="form-textarea" rows="4" placeholder="Краткое описание презентации..."></textarea>
+        </div>
+        <div class="form-actions">
+          <a href="teacher.html" class="btn btn--outline" style="text-align:center;">Отмена</a>
+          <button type="submit" class="btn btn--primary">Создать и добавить слайды</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <script src="js/icons.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    requireAuth('teacher');
+    document.getElementById('back-icon').innerHTML = Icons.arrowLeft;
+    document.getElementById('form-icon').innerHTML = Icons.presentation;
+
+    document.getElementById('create-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const title = document.getElementById('title').value.trim();
+      const description = document.getElementById('description').value.trim();
+      apiFetch('/api/presentations', {
+        method: 'POST',
+        body: { title, description: description || null },
+      })
+        .then((p) => {
+          window.location.href = `create-slide.html?presentationId=${p.id}`;
+        })
+        .catch((e) => console.error(e));
+    });
+  </script>
+</body>
+</html>

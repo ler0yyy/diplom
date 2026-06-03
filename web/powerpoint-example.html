@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Пример слайда PowerPoint — PollPoint</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner" style="max-width:72rem;margin:0 auto;padding:1rem;">
+      <button type="button" class="back-link" id="back-btn" style="background:none;border:none;cursor:pointer;">
+        <span id="back-icon"></span> Назад
+      </button>
+      <h1 class="main__title">Пример слайда PowerPoint</h1>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="card card--bordered mb-6">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:0.5rem;">
+        <h2 class="section-title" style="margin:0;">Слайд для вставки в презентацию</h2>
+        <div style="display:flex;gap:0.5rem;">
+          <button type="button" class="btn btn--outline" style="font-size:0.875rem;">Превью</button>
+          <button type="button" class="btn btn--primary" style="font-size:0.875rem;" id="download-btn">Скачать PNG</button>
+        </div>
+      </div>
+
+      <div class="slide-preview">
+        <div>
+          <h3>Интерактивный опрос</h3>
+          <p>Наведите камеру для участия</p>
+        </div>
+        <div class="qr-box">
+          <canvas id="qr-main"></canvas>
+        </div>
+        <div>
+          <p style="color:#bfdbfe;margin-bottom:0.5rem;">Или перейдите по ссылке:</p>
+          <p class="slide-url" id="poll-url"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card card--bordered">
+        <h3 class="section-title">Как использовать в PowerPoint</h3>
+        <ol class="steps">
+          <li><span class="step-num">1</span><span>Скачайте слайд с QR-кодом в формате PNG</span></li>
+          <li><span class="step-num">2</span><span>Вставьте изображение в вашу презентацию PowerPoint</span></li>
+          <li><span class="step-num">3</span><span>Покажите слайд студентам во время лекции</span></li>
+          <li><span class="step-num">4</span><span>Студенты сканируют QR-код и голосуют</span></li>
+          <li><span class="step-num">5</span><span>Перейдите к следующему слайду для показа результатов</span></li>
+        </ol>
+      </div>
+      <div class="card card--bordered">
+        <h3 class="section-title">QR-код для печати</h3>
+        <p style="font-size:0.875rem;color:var(--gray-600);margin-bottom:1rem;">
+          Вы также можете распечатать QR-код отдельно для размещения в аудитории
+        </p>
+        <div style="display:flex;justify-content:center;padding:1.5rem;background:var(--gray-50);border-radius:var(--radius);">
+          <div style="background:#fff;padding:1rem;border-radius:var(--radius);">
+            <canvas id="qr-print"></canvas>
+          </div>
+        </div>
+        <p style="text-align:center;font-size:0.75rem;color:var(--gray-500);margin-top:1rem;">Ссылка для опроса:</p>
+        <p style="font-size:0.875rem;font-family:monospace;background:var(--gray-100);padding:0.5rem;border-radius:var(--radius);word-break:break-all;" id="poll-url-small"></p>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/qrcode.min.js"></script>
+  <script src="js/icons.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/powerpoint.js"></script>
+  <script>
+    document.getElementById('back-icon').innerHTML = Icons.arrowLeft;
+    document.getElementById('back-btn').addEventListener('click', () => history.back());
+  </script>
+</body>
+</html>
