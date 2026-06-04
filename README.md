@@ -176,10 +176,7 @@ PGDATABASE=pollpoint
 ```
 
 ---
-📄 Лицензия
-MIT © 2026 ler0yyy
-
 🤝 Контакты
-Если есть вопросы или предложения, открывайте [issue](https://github.com/ler0yyy/diplom/issues) или пишите на почту.
+Если есть вопросы или предложения, открывайте [issue](https://github.com/ler0yyy/diplom/issues) или пишите на [почту](leroiler2004@gmail.com).
 
 Сделано с ❤️ в рамках дипломного проекта
