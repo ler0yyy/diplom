@@ -34,6 +34,7 @@
 ---
 
 ## 📂 Структура проекта
+```
 PollPoint/
 ├── web/ # Сайт (HTML/CSS/JS)
 │ ├── index.html # Вход / регистрация
@@ -59,7 +60,7 @@ PollPoint/
 ├── start.bat # Быстрый старт (Windows)
 ├── start.sh # Быстрый старт (macOS / Linux)
 └── README.md
-
+```
 ---
 
 ## ⚡ Быстрый старт
