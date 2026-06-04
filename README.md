@@ -177,6 +177,6 @@ PGDATABASE=pollpoint
 
 ---
 🤝 Контакты
-Если есть вопросы или предложения, открывайте [issue](https://github.com/ler0yyy/diplom/issues) или пишите на [почту](leroiler2004@gmail.com).
+Если есть вопросы или предложения, открывайте [issue](https://github.com/ler0yyy/diplom/issues) или пишите на почту(leroiler2004@gmail.com).
 
 Сделано с ❤️ в рамках дипломного проекта
