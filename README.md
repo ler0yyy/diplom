@@ -1,4 +1,3 @@
-```markdown
 # 🎯 PollPoint — интерактивная система опросов для лекций
 
 **PollPoint** объединяет веб-сайт, сервер на Flask, базу данных PostgreSQL и макросы PowerPoint (VBA) для проведения опросов в реальном времени. Преподаватель создаёт вопросы заранее, студенты отвечают через QR-код, а результаты мгновенно появляются на слайде презентации и в браузере.
@@ -35,34 +34,31 @@
 ---
 
 ## 📂 Структура проекта
-
-```
 PollPoint/
-├── web/                  # Сайт (HTML/CSS/JS)
-│   ├── index.html        # Вход / регистрация
-│   ├── teacher.html      # Кабинет преподавателя
-│   ├── create-*          # Конструктор презентаций и слайдов
-│   ├── poll*.html        # Опросы (choice / tags)
-│   ├── results.html      # Статистика в реальном времени
-│   └── js/               # API-клиент, авторизация, графики
-├── server/               # Flask API + раздача сайта
-│   ├── app.py            # Инициализация приложения
-│   ├── models.py         # SQLAlchemy‑модели
-│   ├── routes/           # auth, presentations, poll
-│   ├── config.py         # Конфигурация из .env
-│   ├── check_db.py       # Проверка подключения к БД
-│   ├── init_db.py        # Создание таблиц
-│   ├── seed.py           # Тестовые пользователи
-│   └── run.py            # Точка входа
+├── web/ # Сайт (HTML/CSS/JS)
+│ ├── index.html # Вход / регистрация
+│ ├── teacher.html # Кабинет преподавателя
+│ ├── create-* # Конструктор презентаций и слайдов
+│ ├── poll*.html # Опросы (choice / tags)
+│ ├── results.html # Статистика в реальном времени
+│ └── js/ # API-клиент, авторизация, графики
+├── server/ # Flask API + раздача сайта
+│ ├── app.py # Инициализация приложения
+│ ├── models.py # SQLAlchemy‑модели
+│ ├── routes/ # auth, presentations, poll
+│ ├── config.py # Конфигурация из .env
+│ ├── check_db.py # Проверка подключения к БД
+│ ├── init_db.py # Создание таблиц
+│ ├── seed.py # Тестовые пользователи
+│ └── run.py # Точка входа
 ├── database/
-│   └── database.sql      # SQL‑схема PostgreSQL
+│ └── database.sql # SQL‑схема PostgreSQL
 ├── presentation/
-│   ├── vba_macro.bas     # Макросы HTTP + сессии + статистика
-│   └── ThisPresentation.txt # Код события смены слайда
-├── start.bat             # Быстрый старт (Windows)
-├── start.sh              # Быстрый старт (macOS / Linux)
+│ ├── vba_macro.bas # Макросы HTTP + сессии + статистика
+│ └── ThisPresentation.txt # Код события смены слайда
+├── start.bat # Быстрый старт (Windows)
+├── start.sh # Быстрый старт (macOS / Linux)
 └── README.md
-```
 
 ---
 
@@ -93,17 +89,10 @@ PollPoint/
 
    # Ubuntu
    sudo apt update && sudo apt install postgresql && sudo service postgresql start
-   ```
-
 2. В терминале выполните:
-   ```bash
+    ```bash
    ./start.sh
-   ```
-
-3. Откройте **http://localhost:5001/**
-
----
-
+3. Откройте http://localhost:5001/
 ## 🔐 Тестовые учётные записи
 
 После запуска скрипта в базе уже будут пользователи:
@@ -186,16 +175,10 @@ PGDATABASE=pollpoint
 ```
 
 ---
+📄 Лицензия
+MIT © 2026 ler0yyy
 
-## 📄 Лицензия
-
-MIT © 2026 [ler0yyy/ ссылка на GitHub]
-
----
-
-## 🤝 Контакты
-
+🤝 Контакты
 Если есть вопросы или предложения, открывайте [issue](https://github.com/ler0yyy/diplom/issues) или пишите на почту.
 
-> Сделано с ❤️ в рамках дипломного проекта
-```
+Сделано с ❤️ в рамках дипломного проекта
