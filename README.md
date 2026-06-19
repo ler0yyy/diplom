@@ -149,16 +149,50 @@ python -m server.run
 
 ## 🧩 Интеграция с PowerPoint
 
-1. Откройте `.pptm` файл и перейдите в редактор VBA (`Alt+F11`).
-2. Импортируйте модуль `presentation/vba_macro.bas`.
-3. Добавьте библиотеку [VBA‑JSON](https://github.com/VBA-tools/VBA-JSON).
-4. Вставьте код из `presentation/ThisPresentation.txt` в объект `ThisPresentation`.
-5. На слайдах создайте фигуры с именами:
-   - QR‑слайд: **PollLink**
-   - Статистика: **QuestionBox**, **TotalBox**, **Option1**…**Option5**, **TagsBox**
-6. В заметках слайда укажите:
-   - `[POLL slide_id=1]` — для слайда с QR
-   - `[STATS]` — для слайда статистики
+1. Сохраните презентацию в формате `.pptm`.
+2. Откройте редактор VBA (Alt + F11).
+3. Импортируйте:
+   - presentation/vba_macro.bas
+   - JsonConverter.bas
+4. В Tools → References подключите Microsoft Scripting Runtime.
+
+### Указание JWT‑токена
+
+После входа в систему откройте DevTools → Application → Local Storage → access_token.
+
+В модуле VBA укажите:
+
+Private Const AUTH_TOKEN As String = "ВАШ_JWT_ТОКЕН"
+
+Без токена сервер вернёт ошибку 401.
+
+### Указание slide_id
+
+В процедуре обновления статистики необходимо указать:
+
+Dim slideId As Long
+slideId = 5
+
+Важно: это ID из базы данных, а не номер слайда в PowerPoint.
+
+### Обязательные фигуры на слайде
+
+Для корректной работы должны существовать:
+
+QuestionBox  
+TotalBox  
+Bar1–Bar5  
+Label1–Label5  
+Percent1–Percent5  
+TagsBox  
+PollLink  
+
+PowerPoint подключается к серверу через MSXML2.XMLHTTP и выполняет:
+
+POST /api/sessions  
+GET /api/ppt/slide/{id}/stats  
+
+Сервер возвращает JSON → JsonConverter преобразует его → VBA обновляет фигуры.
 
 ---
 
@@ -177,6 +211,6 @@ PGDATABASE=pollpoint
 
 ---
 🤝 Контакты
-Если есть вопросы или предложения, открывайте [issue](https://github.com/ler0yyy/diplom/issues) или пишите на почту(leroiler2004@gmail.com).
+Если есть вопросы или предложения, открывайте [issue](https://github.com/ler0yyy/diplom/issues) или пишите на почту (leroiler2004@gmail.com).
 
 Сделано с ❤️ в рамках дипломного проекта
